@@ -1,4 +1,6 @@
-#import "../PS.h"
+#import <PSHeader/CameraApp/CameraApp.h>
+#import <PSHeader/CameraMacros.h>
+#import <version.h>
 
 @interface CAMModeDialItem (Addition)
 @property(retain, nonatomic) UILabel *label;
@@ -17,9 +19,9 @@ static NSString *emojiForMode(NSInteger mode) {
         case 4:
             return @"🔲";
         case 5:
-            return isiOS10Up ? @"⏳" : @"⚙️";
+            return IS_IOS_OR_NEWER(iOS_10_0) ? @"⏳" : @"⚙️";
         case 6:
-            return isiOS10Up ? @"🤳" : @"⏳";
+            return IS_IOS_OR_NEWER(iOS_10_0) ? @"🤳" : @"⏳";
         default:
             return nil;
     }
@@ -67,7 +69,7 @@ static NSString *emojiForMode(NSInteger mode) {
 
 - (NSString *)_titleForMode: (NSInteger)mode {
     NSString *emoji = emojiForMode(mode);
-    return emoji ? emoji : %orig;
+    return emoji ?: %orig;
 }
 
 %end
@@ -80,7 +82,7 @@ static NSString *emojiForMode(NSInteger mode) {
 
 - (NSString *)modeDial: (id)arg1 titleForItemAtIndex: (NSUInteger)index {
     NSString *emoji = emojiForMode([MSHookIvar<CAMCaptureController *>(self, "_cameraController").supportedCameraModes[index] intValue]);
-    return emoji ? emoji : %orig;
+    return emoji ?: %orig;
 }
 
 %end
@@ -102,10 +104,10 @@ static NSString *emojiForMode(NSInteger mode) {
 
 %ctor {
     %init;
-    if (isiOS9Up) {
+    if (IS_IOS_OR_NEWER(iOS_9_0)) {
         openCamera9();
         %init(iOS9Up);
-    } else if (isiOS8) {
+    } else if (IS_IOS_OR_NEWER(iOS_8_0)) {
         openCamera8();
         %init(iOS8);
     } else {
