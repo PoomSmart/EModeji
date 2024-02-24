@@ -1,5 +1,6 @@
 #import <PSHeader/CameraApp/CameraApp.h>
 #import <PSHeader/CameraMacros.h>
+#import <theos/IOSMacros.h>
 #import <version.h>
 
 @interface CAMModeDialItem (Addition)
@@ -42,6 +43,8 @@ static NSString *emojiForMode(NSInteger mode) {
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
+    if (IS_IPAD)
+        return %orig;
     return CGSizeMake(self.superview.frame.size.height, self.superview.frame.size.height);
 }
 
