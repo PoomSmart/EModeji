@@ -13,7 +13,7 @@ static NSString *emojiForMode(NSInteger mode) {
         case 1:
             return @"📹";
         case 2:
-            return @"🎈";
+            return @"🐢";
         case 3:
             return @"🎞";
         case 4:
@@ -56,62 +56,27 @@ static NSString *emojiForMode(NSInteger mode) {
 }
 
 - (void)dealloc {
-    [self.label release];
     self.label = nil;
     %orig;
 }
 
 %end
 
-%group iOS9Up
-
 %hook CAMModeDial
 
-- (NSString *)_titleForMode: (NSInteger)mode {
-    NSString *emoji = emojiForMode(mode);
-    return emoji ?: %orig;
+- (void)_setItems:(NSDictionary <NSNumber *, CAMModeDialItem *> *)items {
+    %orig;
+    for (NSNumber *mode in items) {
+        CAMModeDialItem *item = items[mode];
+        NSString *emoji = emojiForMode([mode intValue]);
+        if (emoji)
+            item.title = emoji;
+    }
 }
-
-%end
-
-%end
-
-%group iOS8
-
-%hook CAMCameraView
-
-- (NSString *)modeDial: (id)arg1 titleForItemAtIndex: (NSUInteger)index {
-    NSString *emoji = emojiForMode([MSHookIvar<CAMCaptureController *>(self, "_cameraController").supportedCameraModes[index] intValue]);
-    return emoji ?: %orig;
-}
-
-%end
-
-%end
-
-%group iOS7
-
-%hook PLCameraView
-
-- (NSString *)modeDial: (id)arg1 titleForItemAtIndex: (NSUInteger)index {
-    NSString *emoji = emojiForMode([MSHookIvar<PLCameraController *>(self, "_cameraController").supportedCameraModes[index] intValue]);
-    return emoji ? emoji : %orig;
-}
-
-%end
 
 %end
 
 %ctor {
+    openCamera10();
     %init;
-    if (IS_IOS_OR_NEWER(iOS_9_0)) {
-        openCamera9();
-        %init(iOS9Up);
-    } else if (IS_IOS_OR_NEWER(iOS_8_0)) {
-        openCamera8();
-        %init(iOS8);
-    } else {
-        openCamera7();
-        %init(iOS7);
-    }
 }

@@ -1,9 +1,9 @@
 Package: com.ps.emodeji
 Name: EModeji
-Depends: mobilesubstrate, firmware (>= 7.0)
-Version: 1.0
+Depends: mobilesubstrate, firmware (>= 13.0)
+Version: 1.0.0
 Architecture: iphoneos-arm
-Description: Emoji on camera modes
+Description: Emoji on camera modes.
 Author: PoomSmart
 Section: Tweaks
 Maintainer: PoomSmart
