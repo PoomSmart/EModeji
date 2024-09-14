@@ -23,6 +23,8 @@ static NSString *emojiForMode(NSInteger mode) {
             return IS_IOS_OR_NEWER(iOS_10_0) ? @"⏳" : @"⚙️";
         case 6:
             return IS_IOS_OR_NEWER(iOS_10_0) ? @"🤳" : @"⏳";
+        case 7:
+            return @"🎬";
         default:
             return nil;
     }
