@@ -2,7 +2,12 @@ ifeq ($(SIMULATOR),1)
 	TARGET = simulator:clang:latest
 	ARCHS = x86_64 i386
 else
-	TARGET = iphone:clang:latest:11.0
+	ifeq ($(THEOS_PACKAGE_SCHEME),rootless)
+		TARGET = iphone:clang:latest:15.0
+	else
+		export PREFIX = $(THEOS)/toolchain/Xcode11.xctoolchain/usr/bin/
+		TARGET = iphone:clang:14.5:11.0
+	endif
 endif
 
 INSTALL_TARGET_PROCESSES = Camera
