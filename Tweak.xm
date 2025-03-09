@@ -1,10 +1,9 @@
 #import <PSHeader/CameraApp/CameraApp.h>
 #import <PSHeader/CameraMacros.h>
 #import <theos/IOSMacros.h>
-#import <version.h>
 
 @interface CAMModeDialItem (Addition)
-@property(retain, nonatomic) UILabel *label;
+@property (retain, nonatomic) UILabel *label;
 @end
 
 static NSString *emojiForMode(NSInteger mode) {
@@ -20,9 +19,9 @@ static NSString *emojiForMode(NSInteger mode) {
         case 4:
             return @"🔲";
         case 5:
-            return IS_IOS_OR_NEWER(iOS_10_0) ? @"⏳" : @"⚙️";
+            return @"⏳";
         case 6:
-            return IS_IOS_OR_NEWER(iOS_10_0) ? @"🤳" : @"⏳";
+            return @"🤳";
         case 7:
             return @"🎬";
         default:
@@ -32,7 +31,7 @@ static NSString *emojiForMode(NSInteger mode) {
 
 %hook CAMModeDialItem
 
-%property(retain, nonatomic) UILabel *label;
+%property (retain, nonatomic) UILabel *label;
 
 - (void)_commonCAMModeDialItemInitialization {
     %orig;
